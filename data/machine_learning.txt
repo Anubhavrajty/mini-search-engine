@@ -1,0 +1,4 @@
+Machine learning is a branch of artificial intelligence.
+It allows computers to learn patterns from data.
+Python libraries like scikit learn and tensorflow are used for machine learning.
+Machine learning is used in recommendation systems and predictions.
