@@ -1,0 +1,4 @@
+Data science involves analyzing large amounts of data.
+It combines statistics, programming, and domain knowledge.
+Python libraries like pandas and numpy help analyze data.
+Data science is used in business, healthcare, and research.
