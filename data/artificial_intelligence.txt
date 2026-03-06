@@ -1,0 +1,4 @@
+Artificial intelligence aims to create smart machines.
+AI can perform tasks that normally require human intelligence.
+Examples include speech recognition and computer vision.
+Many AI applications are built using Python.
