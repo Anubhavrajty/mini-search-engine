@@ -1,40 +1,33 @@
+#!/usr/bin/env python
 import os
-from collections import defaultdict
+import sys
+import urllib.parse
 
-folder = "data"
-query_input = input("Enter keyword(s) to search: ").strip().lower()
-queries = query_input.split()
+if len(sys.argv) < 3:
+    print("Usage: search [g|d|y|w|gh|so|img] query")
+    sys.exit()
 
-file_matches = defaultdict(list)  # store file_name: list of matched lines
-file_counts = defaultdict(int)    # store file_name: number of matches
+command = sys.argv[1]
+query = urllib.parse.quote(" ".join(sys.argv[2:]))
 
-# Loop through all files in data/
-for file_name in os.listdir(folder):
-    path = os.path.join(folder, file_name)
-    if os.path.isdir(path):
-        continue  # ignore folders
-
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-            for i, line in enumerate(lines, 1):
-                line_lower = line.lower()
-                for q in queries:
-                    if q in line_lower:
-                        # Highlight keyword in output
-                        highlighted_line = line.replace(q, f"[{q.upper()}]")
-                        file_matches[file_name].append(f"Line {i}: {highlighted_line.strip()}")
-                        file_counts[file_name] += 1
-    except Exception as e:
-        print(f"Cannot read {file_name}: {e}")
-
-# Sort files by number of matches (most relevant first)
-sorted_files = sorted(file_counts.items(), key=lambda x: x[1], reverse=True)
-
-if not sorted_files:
-    print("No files found containing your keyword(s).")
+# Define URLs for each command
+if command == "g":
+    url = f"https://www.google.com/search?q={query}"
+elif command == "d":
+    url = f"https://duckduckgo.com/?q={query}"
+elif command == "y":
+    url = f"https://www.youtube.com/results?search_query={query}"
+elif command == "w":
+    url = f"https://en.wikipedia.org/wiki/{query}"
+elif command == "gh":
+    url = f"https://github.com/search?q={query}"
+elif command == "so":
+    url = f"https://stackoverflow.com/search?q={query}"
+elif command == "img":
+    url = f"https://www.google.com/search?tbm=isch&q={query}"
 else:
-    for file_name, count in sorted_files:
-        print(f"\nFound {count} match(es) in {file_name}:")
-        for line in file_matches[file_name]:
-            print(f"  {line}")
+    print("Unknown command. Use g, d, y, w, gh, so, or img")
+    sys.exit()
+
+# Open URL in Android browser (Termux) or Linux default browser
+os.system(f'am start -a android.intent.action.VIEW -d "{url}"')
